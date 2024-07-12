@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "848823478191",
+    "project_id": "sixth-subject",
+    "storage_bucket": "sixth-subject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848823478191:android:24240966b566ae09db715a",
+        "android_client_info": {
+          "package_name": "dev.junwooh.sixthsubject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF0rjy_0-FTv2i4z_fafoqNpqt-bS7ekg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
