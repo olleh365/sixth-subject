@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +36,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _counterDB = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -43,25 +44,39 @@ class _MyHomePageState extends State<MyHomePage> {
     _loadInitialCounter();
   }
 
-  Future<void> _loadInitialCounter() async {
-    DocumentSnapshot snapshot = await _firestore.collection('counter_db').doc('counter').get();
-    if (snapshot.exists && snapshot.data() != null) {
-      setState(() {
-        _counter = snapshot['value'];
-      });
-    }
+
+  Future<void> _loadInitialCounter() async{
+    DocumentSnapshot snapshot = await _counterDB.collection('counter_db').doc('counter').get();
+    setState(() {
+      _counter = snapshot['value'];
+    });
   }
 
-  void _incrementCounter() async {
+  void _incrementCounter() async{
     setState(() {
       _counter++;
     });
-    await _firestore.collection('counter_db').doc('counter').set({'value': _counter});
+    await _counterDB.collection('counter_db').doc('counter').set({'value': _counter});
+  }
+
+  void _resetCounter() async{
+    await _counterDB.collection('counter_db').doc('counter').delete();
+    setState(() {
+      _counter = 0;
+    });
+    Fluttertoast.showToast(
+      msg: "카운터가 초기화되었습니다.",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -78,6 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const SizedBox(height: 20),
+            ElevatedButton(onPressed: _resetCounter, child: const Text('초기화'))
           ],
         ),
       ),
